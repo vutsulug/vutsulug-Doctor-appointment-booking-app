@@ -1,0 +1,263 @@
+<?php
+//define variables and set to empty values
+$email= $password= "";
+//Error variable
+$inputErr = "";
+//database connection
+$servername="localhost";
+$dbusername="root";
+$dbpassword="";
+$dbname="vutsulutech";
+
+//create connection
+$conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
+//Start the session
+session_start();
+
+//
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{	
+	//Stored user input
+	$tempEmail = test_input($_POST["inputEmail"]);
+	$tempPassword = test_input($_POST["inputPassword"]);
+	$sql = "SELECT * FROM users WHERE email = '$tempEmail' AND password = '$tempPassword'";
+	$queryResult = mysqli_query($conn,$sql);
+	
+	//Check number of rows in the databse
+	if(mysqli_num_rows($queryResult) == 1){
+		$_SESSION['login_user'] = $tempEmail; 
+		header("Location: index.php");
+	}else{
+		$inputErr = "Invalid email or password";
+	}
+}
+
+//check for incorrect user input
+function test_input($data)
+{
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	return $data;
+} 
+
+//Check connection
+if(!$conn)
+{
+	die("Connection failed: ".mysqli_connect_error());
+}
+
+
+mysqli_close($conn);
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+  <style>
+  .btn {
+  border: none;
+  color: white;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.success {background-color: #4CAF50;} /* Green */
+.success:hover {background-color: #46a049;}
+
+.info {background-color: #2196F3;} /* Blue */
+.info:hover {background: #0b7dda;}
+
+.warning {background-color: #ff9800;} /* Orange */
+.warning:hover {background: #e68a00;}
+
+.danger {background-color: #f44336;} /* Red */ 
+.danger:hover {background: #da190b;}
+
+.default {background-color: #e7e7e7; color: black;} /* Gray */ 
+.default:hover {background: #ddd;}
+
+/*Social media icons*/
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 50%;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
+}
+
+.fa-google {
+  background: #dd4b39;
+  color: white;
+}
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-youtube {
+  background: #bb0000;
+  color: white;
+}
+
+.fa-instagram {
+  background: #125688;
+  color: white;
+}
+
+.fa-pinterest {
+  background: #cb2027;
+  color: white;
+}
+
+.fa-snapchat-ghost {
+  background: #fffc00;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.fa-skype {
+  background: #00aff0;
+  color: white;
+}
+
+.fa-android {
+  background: #a4c639;
+  color: white;
+}
+
+.fa-dribbble {
+  background: #ea4c89;
+  color: white;
+}
+
+.fa-vimeo {
+  background: #45bbff;
+  color: white;
+}
+
+.fa-tumblr {
+  background: #2c4762;
+  color: white;
+}
+
+.fa-vine {
+  background: #00b489;
+  color: white;
+}
+
+.fa-foursquare {
+  background: #45bbff;
+  color: white;
+}
+
+.fa-stumbleupon {
+  background: #eb4924;
+  color: white;
+}
+
+.fa-flickr {
+  background: #f40083;
+  color: white;
+}
+
+.fa-yahoo {
+  background: #430297;
+  color: white;
+}
+
+.fa-soundcloud {
+  background: #ff5500;
+  color: white;
+}
+
+.fa-reddit {
+  background: #ff5700;
+  color: white;
+}
+
+/*Icon buttons*/
+.btn {
+  background-color: grey;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+}
+  
+  
+  </style>
+</head>
+
+<body>
+
+<a href="#" class="fa fa-facebook"></a>
+<a href="#" class="fa fa-twitter"></a>
+  </div>
+ <h1>Alert Buttons</h1>
+<div class="btn bt">
+<button class="btn success">Success</button>
+<button class="btn info">Info</button>
+<button class="btn warning">Warning</button>
+<button class="btn danger">Danger</button>
+<button class="btn default">Default</button>
+</div>
+
+<div class="btn">
+<h2>Icon Buttons</h2>
+<p>Icon buttons:</p>
+<button class="btn"><i class="fa fa-home"></i></button>
+<button class="btn"><i class="fa fa-bars"></i></button>
+<button class="btn"><i class="fa fa-trash"></i></button>
+<button class="btn"><i class="fa fa-close"></i></button>
+<button class="btn"><i class="fa fa-folder"></i></button>
+
+<p>Icon buttons with text:</p>
+<button class="btn"><i class="fa fa-home"></i> Home</button>
+<button class="btn"><i class="fa fa-bars"></i> Menu</button>
+<button class="btn"><i class="fa fa-trash"></i> Trash</button>
+<button class="btn"><i class="fa fa-close"></i> Close</button>
+<button class="btn"><i class="fa fa-folder"></i> Folder</button>
+</div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="./login_files/jquery.min.js.download"></script>
+  <script src="./login_files/bootstrap.bundle.min.js.download"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="./login_files/jquery.easing.min.js.download"></script>
+
+
+
+
+</body>
+</html>
